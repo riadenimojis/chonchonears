@@ -34,6 +34,7 @@ if (saved) {
             render(tracks);
         });
 }
+
 function render(list) {
 
     library.innerHTML = "";
@@ -44,13 +45,13 @@ function render(list) {
         card.className = "track-card";
 
         card.innerHTML = `
-    <img class="cover"
-         src="${track.cover || 'assets/default-cover.png'}">
+            <img class="cover"
+                 src="${track.cover || 'assets/default-cover.png'}">
 
-    <h3>${track.title}</h3>
-    <p>${track.artist}</p>
-    <small>${track.customName || track.album}</small>
-`;
+            <h3>${track.title}</h3>
+            <p>${track.artist}</p>
+            <small>${track.customName || track.album}</small>
+        `;
 
         card.onclick = () => {
             current = index;
@@ -68,8 +69,9 @@ function loadTrack(index) {
     audio.src = track.file;
 
     title.textContent = track.title;
+
     artist.textContent =
-        `${track.artist} • ${track.album}`;
+        `${track.artist} • ${track.customName || track.album}`;
 
     audio.play();
 
@@ -140,72 +142,85 @@ audio.addEventListener("ended", () => {
 
 audio.addEventListener("timeupdate", () => {
 
-    progress.value =
-        (audio.currentTime / audio.duration) * 100;
+    if (audio.duration) {
+        progress.value =
+            (audio.currentTime / audio.duration) * 100;
+    }
 });
 
 progress.addEventListener("input", () => {
 
-    audio.currentTime =
-        (progress.value / 100) * audio.duration;
+    if (audio.duration) {
+        audio.currentTime =
+            (progress.value / 100) * audio.duration;
+    }
 });
 
 document.querySelectorAll("[data-sort]")
-.forEach(button => {
+    .forEach(button => {
 
-    button.onclick = () => {
+        button.onclick = () => {
 
-        const type = button.dataset.sort;
+            const type = button.dataset.sort;
 
-        let sorted = [...tracks];
+            let sorted = [...tracks];
 
-        sorted.sort((a, b) => {
+            sorted.sort((a, b) => {
 
-            if (type === "date")
-                return new Date(b.dateAdded)
-                    - new Date(a.dateAdded);
+                if (type === "date") {
+                    return new Date(b.dateAdded)
+                        - new Date(a.dateAdded);
+                }
 
-            return a[type].localeCompare(b[type]);
-        });
+                return (a[type] || "")
+                    .localeCompare(b[type] || "");
+            });
 
-        render(sorted);
-    };
-});
+            render(sorted);
+        };
+    });
 
 document.getElementById("search")
-.addEventListener("input", e => {
+    .addEventListener("input", e => {
 
-    const value = e.target.value.toLowerCase();
+        const value = e.target.value.toLowerCase();
 
-    const filtered = tracks.filter(track =>
-        track.title.toLowerCase().includes(value) ||
-        track.artist.toLowerCase().includes(value) ||
-        track.album.toLowerCase().includes(value)
-    );
+        const filtered = tracks.filter(track =>
+            track.title.toLowerCase().includes(value) ||
+            track.artist.toLowerCase().includes(value) ||
+            track.album.toLowerCase().includes(value)
+        );
 
-    render(filtered);
-});
+        render(filtered);
+    });
 
 const input = document.getElementById("musicInput");
 
-document.getElementById("loadMusic")
-.onclick = () => input.click();
+document.getElementById("loadMusic").onclick = () => {
+    input.click();
+};
 
 input.addEventListener("change", e => {
 
     [...e.target.files].forEach(file => {
 
         tracks.push({
-            title: file.name.replace(".mp3", ""),
+            title: file.name.replace(/\.[^/.]+$/, ""),
             artist: "Unknown",
             album: "Local Files",
             folder: "Local",
             dateAdded: new Date().toISOString(),
             file: URL.createObjectURL(file)
-        
+        });
     });
 
+    localStorage.setItem(
+        "library",
+        JSON.stringify(tracks)
+    );
+
     render(tracks);
+});
 
 document.getElementById("renameAlbum").onclick = () => {
 
@@ -215,10 +230,10 @@ document.getElementById("renameAlbum").onclick = () => {
 
         tracks[current].customName = nouveauNom;
 
-	localStorage.setItem(
-    "library",
-    JSON.stringify(tracks)
-);
+        localStorage.setItem(
+            "library",
+            JSON.stringify(tracks)
+        );
 
         render(tracks);
     }
@@ -236,14 +251,14 @@ coverInput.addEventListener("change", e => {
 
     if (file) {
 
-        tracks[current].cover = URL.createObjectURL(file);
+        tracks[current].cover =
+            URL.createObjectURL(file);
 
-	localStorage.setItem(
-    		"library",
-   	JSON.stringify(tracks)
-);
+        localStorage.setItem(
+            "library",
+            JSON.stringify(tracks)
+        );
 
         render(tracks);
     }
-
 });
