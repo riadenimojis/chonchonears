@@ -1,0 +1,28 @@
+{
+  "tracks": [
+    {
+      "title": "Dream Night",
+      "artist": "Nova",
+      "album": "Midnight",
+      "folder": "album1",
+      "dateAdded": "2025-01-12",
+      "file": "music/album1/dream-night.mp3"
+    },
+    {
+      "title": "Skyline",
+      "artist": "Nova",
+      "album": "Midnight",
+      "folder": "album1",
+      "dateAdded": "2025-01-15",
+      "file": "music/album1/skyline.mp3"
+    },
+    {
+      "title": "Ocean Lights",
+      "artist": "Luna",
+      "album": "Waves",
+      "folder": "album2",
+      "dateAdded": "2025-02-10",
+      "file": "music/album2/ocean-lights.mp3"
+    }
+  ]
+}
