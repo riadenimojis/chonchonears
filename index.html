@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,68 +9,207 @@
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link rel="stylesheet" href="style.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
 
-<div class="app">
+    <div class="app">
 
-    <aside class="sidebar">
-        <h1>chonchon ears ++</h1>
+        <aside class="sidebar">
 
-        <button id="loadMusic">Add Music</button>
-        <input type="file" id="musicInput" multiple accept="audio/*" hidden>
+            <h1>chonchon ears ++</h1>
 
-        <div class="filter-group">
-            <h3>Browse</h3>
+            <button id="loadMusic">
+                ➕ Ajouter de la musique
+            </button>
 
-            <button data-sort="folder">Folders</button>
-            <button data-sort="album">Albums</button>
-            <button data-sort="artist">Artists</button>
-            <button data-sort="date">Date Added</button>
-        </div>
-    </aside>
+            <input
+                type="file"
+                id="musicInput"
+                multiple
+                accept="audio/*"
+                hidden>
 
-    <main class="content">
+            <div class="filter-group">
 
-        <div class="topbar">
-            <input id="search" type="text" placeholder="Search music...">
-        </div>
+                <h3>Navigation</h3>
 
-        <div id="library" class="library"></div>
+                <button data-sort="folder">
+                    📁 Dossiers
+                </button>
 
-        <div class="player">
+                <button data-sort="album">
+                    💿 Albums
+                </button>
 
-            <div class="track-info">
-                <h2 id="trackTitle">No Track</h2>
-                <p id="trackArtist">---</p>
+                <button data-sort="artist">
+                    🎤 Artistes
+                </button>
+
+                <button data-sort="date">
+                    📅 Date ajout
+                </button>
+
             </div>
 
-            <audio id="audio"></audio>
+        </aside>
 
-            <div class="controls">
-                <button id="prev">⏮</button>
-                <button id="play">▶</button>
-                <button id="next">⏭</button>
+        <main class="content">
 
-                <button id="shuffle">🔀</button>
-                <button id="repeatOne">🔂</button>
-                <button id="repeatFolder">🔁</button>
+            <div class="topbar">
 
-		<button id="renameAlbum">✏️ Renommer</button>
-		<button id="changeCover">🖼 Couverture</button>
+                <input
+                    id="search"
+                    type="text"
+                    placeholder="Rechercher un morceau, artiste ou album...">
 
-		<input type="file" id="coverInput" accept="image/*" hidden>
             </div>
 
-            <input type="range" id="progress" value="0">
+            <div
+                id="library"
+                class="library">
+            </div>
+
+            <div class="player">
+
+                <div class="track-info">
+
+                    <h2 id="trackTitle">
+                        Aucun morceau
+                    </h2>
+
+                    <p id="trackArtist">
+                        ---
+                    </p>
+
+                </div>
+
+                <audio id="audio"></audio>
+
+                <div class="controls">
+
+                    <button id="prev">⏮</button>
+
+                    <button id="play">▶</button>
+
+                    <button id="next">⏭</button>
+
+                    <button id="shuffle">🔀</button>
+
+                    <button id="repeatOne">🔂</button>
+
+                    <button id="repeatFolder">🔁</button>
+
+                    <button id="editTrack">
+                        ✏️ Modifier
+                    </button>
+
+                    <button id="deleteTrack">
+                        🗑 Supprimer
+                    </button>
+
+                    <button id="newFolder">
+                        📁 Nouveau dossier
+                    </button>
+
+                    <button id="renameFolder">
+                        📂 Renommer dossier
+                    </button>
+
+                    <button id="newAlbum">
+                        💿 Nouvel album
+                    </button>
+
+                    <button id="renameAlbum">
+                        ✏️ Renommer album
+                    </button>
+
+                    <button id="deleteAlbum">
+                        ❌ Supprimer album
+                    </button>
+
+                    <button id="changeCover">
+                        🖼 Couverture
+                    </button>
+
+                    <input
+                        type="file"
+                        id="coverInput"
+                        accept="image/*"
+                        hidden>
+
+                </div>
+
+                <div class="volume-box">
+
+                    <label>
+                        Volume du morceau
+                    </label>
+
+                    <input
+                        type="range"
+                        id="trackVolume"
+                        min="0"
+                        max="100"
+                        value="100">
+
+                </div>
+
+                <input
+                    type="range"
+                    id="progress"
+                    value="0">
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- MODAL ÉDITION -->
+
+    <div
+        id="editModal"
+        class="modal hidden">
+
+        <div class="modal-content">
+
+            <h2>
+                Modifier la piste
+            </h2>
+
+            <input
+                id="editTitle"
+                placeholder="Titre">
+
+            <input
+                id="editArtist"
+                placeholder="Artiste">
+
+            <input
+                id="editAlbum"
+                placeholder="Album">
+
+            <input
+                id="editFolder"
+                placeholder="Dossier">
+
+            <button id="saveTrack">
+                Sauvegarder
+            </button>
+
+            <button id="closeModal">
+                Fermer
+            </button>
 
         </div>
 
-    </main>
+    </div>
 
-</div>
+    <script src="app.js"></script>
 
-<script src="app.js"></script>
 </body>
+
 </html>
